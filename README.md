@@ -5,13 +5,23 @@ A python implementation of [WhatsABI](https://github.com/shazow/whatsabi).
 # install
 
 ```
-pip install git+https://github.com/bitrocks/whatsabi-py.git
+pip install git+https://github.com/viper7882/whatsabi-py.git
+```
+
+# Upgrade to latest Web3
+1. Open your pyproject.toml file.
+2. Find the section where web3 is listed under [tool.poetry.dependencies].
+3. Change the version of web3 to "*" to get the latest version or specify the latest version number if you know it.
+4. Save the pyproject.toml file.
+5. Run poetry update web3 in your terminal to update the lock file and install the new version.
+```shell
+poetry update web3
 ```
 
 # cli usage
 Pull the code:
 ```sh
-git clone https://github.com/bitrocks/whatsabi-py
+git clone https://github.com/viper7882/whatsabi-py
 cd whatsabi-py
 poetry install
 # Extract abi
@@ -20,7 +30,7 @@ poetry run guess_abi --url <ethereum-rpc> --address <address> --siglookups samcz
 
 Eg.
 ```
-poetry run guess_abi --url http://127.0.0.1:8545 --address 0x7a250d5630b4cf539739df2c5dacb4c659f2488d --siglookups samczsun
+poetry run guess_abi --url https://bscrpc.com --address 0x2e1FC745937a44ae8313bC889EE023ee303F2488 --siglookups samczsun
 ```
 Output:
 ```
@@ -59,54 +69,35 @@ from web3 import Web3
 from whatsabi.selectors import selectors_from_bytecode
 from whatsabi.loaders import SamczsunSignatureLookup, FourByteSignatureLookup, MultiSignatureLookup
 
-node_url = "http://127.0.0.1:8545" # Change to your endpoint
+node_url = "https://bscrpc.com" # Change to your endpoint
 provider = Web3(Web3.HTTPProvider(node_url))
-address = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
+address = "0x2e1FC745937a44ae8313bC889EE023ee303F2488"
 code = provider.eth.get_code(address)
 selectors = selectors_from_bytecode(code.hex())
-print(selectors)
-# ['0x00000000',
-#  '0x06fdde03',
-#  '0x46423aa7',
-#  '0x55944a42',
-#  '0x5b34b966',
-#  '0x79df72bd',
-#  '0x87201b41',
-#  '0x88147732',
-#  '0xa8174404',
-#  '0xb3a34c4c',
-#  '0xe7acab24',
-#  '0xed98a574',
-#  '0xf07ec373',
-#  '0xf47b7740',
-#  '0xfb0f3ee1',
-#  '0xfd9f1e10']
 
-# SamczsunSignatureLookup
-samczsun_sig_lookup = SamczsunSignatureLookup()
-func_signatures = asyncio.get_event_loop().run_until_complete(samczsun_sig_lookup.load_functions("0x06fdde03"))
-print(func_signatures)
-# ['name()']
+for selector in selectors:
+    print(f"selector: {selector}")
 
-# FourByteSignatureLookup
-fourbyte_sig_lookup = FourByteSignatureLookup()
-func_signatures = asyncio.get_event_loop().run_until_complete(fourbyte_sig_lookup.load_functions("0x06fdde03"))
-print(func_signatures)
-# ['transfer_attention_tg_invmru_6e7aa58(bool,address,address)',
-#  'message_hour(uint256,int8,uint16,bytes32)',
-#  'name()']
-
-# MultiSignatureLookup
-multi_sig_lookup = MultiSignatureLookup([samczsun_sig_lookup, fourbyte_sig_lookup])
-func_signatures = asyncio.get_event_loop().run_until_complete(multi_sig_lookup.load_functions("0x06fdde03"))
-print(func_signatures)
-# ['transfer_attention_tg_invmru_6e7aa58(bool,address,address)',
-#  'message_hour(uint256,int8,uint16,bytes32)',
-#  'name()']
+    # SamczsunSignatureLookup
+    samczsun_sig_lookup = SamczsunSignatureLookup()
+    func_signatures = asyncio.get_event_loop().run_until_complete(samczsun_sig_lookup.load_functions(selector))
+    print(f"SamczsunSignatureLookup: {func_signatures}")
+    
+    # FourByteSignatureLookup
+    fourbyte_sig_lookup = FourByteSignatureLookup()
+    func_signatures = asyncio.get_event_loop().run_until_complete(fourbyte_sig_lookup.load_functions(selector))
+    print(f"FourByteSignatureLookup: {func_signatures}")
+    
+    # MultiSignatureLookup
+    multi_sig_lookup = MultiSignatureLookup([samczsun_sig_lookup, fourbyte_sig_lookup])
+    func_signatures = asyncio.get_event_loop().run_until_complete(multi_sig_lookup.load_functions(selector))
+    print(f"MultiSignatureLookup: {func_signatures}")
+    print("-" * 120)
 
 # Event lookup
-event_signatures = asyncio.get_event_loop().run_until_complete(samczsun_sig_lookup.load_events("0x721c20121297512b72821b97f5326877ea8ecf4bb9948fea5bfcb6453074d37f"))
-print(event_signatures)
+#event_signatures = asyncio.get_event_loop().run_until_complete(samczsun_sig_lookup.load_events
+#("0x721c20121297512b72821b97f5326877ea8ecf4bb9948fea5bfcb6453074d37f"))
+#print(event_signatures)
 # ['CounterIncremented(uint256,address)']
 ```
 

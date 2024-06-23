@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Black">
+    <option name="sdkName" value="Python 3.10 (whatsabi-py)" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="c52abe7b-0a0a-44ce-be77-ca2e5c0f21a9" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (whatsabi-py)" project-jdk-type="Python SDK" />
+  <component name="PythonCompatibilityInspectionAdvertiser">
+    <option name="version" value="3" />
+  </component>
+</project>
