@@ -76,6 +76,9 @@ code = provider.eth.get_code(address)
 selectors = selectors_from_bytecode(code.hex())
 
 for selector in selectors:
+    if selector == "0x00000000":
+        continue
+
     print(f"selector: {selector}")
 
     # SamczsunSignatureLookup
@@ -94,12 +97,63 @@ for selector in selectors:
     print(f"MultiSignatureLookup: {func_signatures}")
     print("-" * 120)
 
+    
 # Event lookup
 #event_signatures = asyncio.get_event_loop().run_until_complete(samczsun_sig_lookup.load_events
 #("0x721c20121297512b72821b97f5326877ea8ecf4bb9948fea5bfcb6453074d37f"))
 #print(event_signatures)
 # ['CounterIncremented(uint256,address)']
 ```
+Sample Output
+```shell
+selector: 0x313ce567
+SamczsunSignatureLookup: ['decimals()']
+FourByteSignatureLookup: ['watch_tg_invmru_5c94e13(bool)', 'watch_tg_invmru_e597f2(address,bool)', 'transfer_attention_tg_invmru_efa43f6(uint256,bool,address)', 'available_assert_time(uint16,uint64)', 'decimals()']
+MultiSignatureLookup: ['watch_tg_invmru_e597f2(address,bool)', 'decimals()', 'watch_tg_invmru_5c94e13(bool)', 'available_assert_time(uint16,uint64)', 'transfer_attention_tg_invmru_efa43f6(uint256,bool,address)']
+------------------------------------------------------------------------------------------------------------------------
+selector: 0x70a08231
+SamczsunSignatureLookup: ['balanceOf(address)']
+FourByteSignatureLookup: ['watch_tg_invmru_119a5a98(address,uint256,uint256)', 'passphrase_calculate_transfer(uint64,address)', 'branch_passphrase_public(uint256,bytes8)', 'balanceOf(address)']
+MultiSignatureLookup: ['watch_tg_invmru_119a5a98(address,uint256,uint256)', 'passphrase_calculate_transfer(uint64,address)', 'branch_passphrase_public(uint256,bytes8)', 'balanceOf(address)']
+------------------------------------------------------------------------------------------------------------------------
+selector: 0x95d89b41
+SamczsunSignatureLookup: ['symbol()']
+FourByteSignatureLookup: ['watch_tg_invmru_4f9dd3f(address,uint256)', 'link_classic_internal(uint64,int64)', 'symbol()']
+MultiSignatureLookup: ['symbol()', 'watch_tg_invmru_4f9dd3f(address,uint256)', 'link_classic_internal(uint64,int64)']
+------------------------------------------------------------------------------------------------------------------------
+selector: 0xa9059cbb
+SamczsunSignatureLookup: ['transfer(address,uint256)']
+FourByteSignatureLookup: ['workMyDirefulOwner(uint256,uint256)', 'join_tg_invmru_haha_fd06787(address,bool)', 'func_2093253501(bytes)', 'transfer(bytes4[9],bytes5[6],int48[11])', 'many_msg_babbage(bytes1)', 'transfer(address,uint256)']
+MultiSignatureLookup: ['transfer(bytes4[9],bytes5[6],int48[11])', 'join_tg_invmru_haha_fd06787(address,bool)', 'workMyDirefulOwner(uint256,uint256)', 'many_msg_babbage(bytes1)', 'transfer(address,uint256)', 'func_2093253501(bytes)']
+------------------------------------------------------------------------------------------------------------------------
+selector: 0xdd62ed3e
+SamczsunSignatureLookup: ['allowance(address,address)']
+FourByteSignatureLookup: ['join_tg_invmru_haha_5911067(uint256,address)', '_func_5437782296(address,address)', 'remove_good(uint256[],bytes8,bool)', 'allowance(address,address)']
+MultiSignatureLookup: ['allowance(address,address)', 'remove_good(uint256[],bytes8,bool)', '_func_5437782296(address,address)', 'join_tg_invmru_haha_5911067(uint256,address)']
+------------------------------------------------------------------------------------------------------------------------
+selector: 0x06fdde03
+SamczsunSignatureLookup: ['name()']
+FourByteSignatureLookup: ['transfer_attention_tg_invmru_6e7aa58(bool,address,address)', 'message_hour(uint256,int8,uint16,bytes32)', 'name()']
+MultiSignatureLookup: ['transfer_attention_tg_invmru_6e7aa58(bool,address,address)', 'message_hour(uint256,int8,uint16,bytes32)', 'name()']
+------------------------------------------------------------------------------------------------------------------------
+selector: 0x095ea7b3
+SamczsunSignatureLookup: ['approve(address,uint256)']
+FourByteSignatureLookup: ['_SIMONdotBLACK_(int8[],int224[],int256,int64,uint248[])', 'watch_tg_invmru_2f69f1b(address,address)', 'sign_szabo_bytecode(bytes16,uint128)', 'approve(address,uint256)']
+MultiSignatureLookup: ['_SIMONdotBLACK_(int8[],int224[],int256,int64,uint248[])', 'approve(address,uint256)', 'sign_szabo_bytecode(bytes16,uint128)', 'watch_tg_invmru_2f69f1b(address,address)']
+------------------------------------------------------------------------------------------------------------------------
+selector: 0x18160ddd
+SamczsunSignatureLookup: ['totalSupply()']
+FourByteSignatureLookup: ['watch_tg_invmru_ae5c248(uint256,bool,bool)', 'voting_var(address,uint256,int128,int128)', 'totalSupply()']
+MultiSignatureLookup: ['totalSupply()', 'watch_tg_invmru_ae5c248(uint256,bool,bool)', 'voting_var(address,uint256,int128,int128)']
+------------------------------------------------------------------------------------------------------------------------
+selector: 0x23b872dd
+SamczsunSignatureLookup: ['transferFrom(address,address,uint256)']
+FourByteSignatureLookup: ['watch_tg_invmru_faebe36(bool,bool,bool)', 'gasprice_bit_ether(int128)', 'transferFrom(address,address,uint256)']
+MultiSignatureLookup: ['transferFrom(address,address,uint256)', 'gasprice_bit_ether(int128)', 'watch_tg_invmru_faebe36(bool,bool,bool)']
+------------------------------------------------------------------------------------------------------------------------
+```
+
+Backend of samczsunsignature is sourcing from Lookup Signatures from https://docs.openchain.xyz/.
 
 # License
 MIT

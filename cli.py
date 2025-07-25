@@ -24,13 +24,13 @@ def hello():
 @concurrency.coro
 @click.option(
     "--url",
-    default="http://127.0.0.1:8545",
+    default="https://bscrpc.com",
     help="Ethereum rpc service endpoint, eg. Alchemy, Infura, etc",
 )
 @click.option(
     "--address",
-    default="0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
-    help="Ethereum contract address",
+    default="0x2e1FC745937a44ae8313bC889EE023ee303F2488",
+    help="Smart contract address",
 )
 @click.option(
     "--siglookups",
